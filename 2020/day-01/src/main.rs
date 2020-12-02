@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 
-fn read_numbers(file_name: String) -> Vec<i32> {
+fn read_data(file_name: &str) -> Vec<i32> {
     let contents = fs::read_to_string(file_name).unwrap();
     contents.lines().map(|s| s.parse().unwrap()).collect()
 }
@@ -31,7 +31,7 @@ fn find_and_multiply(sum: i32, numbers: &Vec<i32>, vectors: &Vec<Vec<i32>>) -> O
 }
 
 fn main() {
-    let numbers = read_numbers("input.txt".to_string());
+    let numbers = read_data("input.txt");
 
     let mut singles = Vec::new();
     let mut pairs = Vec::new();
