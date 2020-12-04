@@ -164,15 +164,13 @@ fn main() {
 
     let passports = chop_input(&input);
 
-    let valid_passports = passports.iter().filter(|x| passport_is_valid1(x));
     println!(
         "number of valid passports in part 1: {}",
-        valid_passports.count()
+        passports.iter().filter(|x| passport_is_valid1(x)).count()
     );
 
-    let valid_passports = passports.iter().filter(|x| passport_is_valid2(x));
     println!(
         "number of valid passports in part 2: {}",
-        valid_passports.count()
+        passports.iter().filter(|x| passport_is_valid2(x)).count()
     );
 }
