@@ -12,7 +12,14 @@ fn main() {
             .map(check_batch)
             .position(|x| !x)
             .unwrap();
-    println!("problem number in part 1: {}", numbers[bad_position]);
+
+    let problem_number = numbers[bad_position];
+    println!("problem number in part 1: {}", problem_number);
+
+    println!(
+        "encryption weakness (part 2): {}",
+        encryption_weakness(&numbers, problem_number).unwrap()
+    );
 }
 
 fn check_batch(batch: &[i64]) -> bool {
@@ -24,4 +31,23 @@ fn check_batch(batch: &[i64]) -> bool {
         }
     }
     false
+}
+
+// could be done with a fold ... another day
+fn encryption_weakness(numbers: &[i64], invalid_number: i64) -> Option<i64> {
+    for i in 0..numbers.len() {
+        let mut set = Vec::new();
+        for &number in numbers.iter().skip(i + 1) {
+            set.push(number);
+            let sum = set.iter().sum::<i64>();
+            if sum == invalid_number {
+                return Some(set.iter().min().unwrap() + set.iter().max().unwrap());
+            }
+            if sum > invalid_number {
+                break;
+            }
+        }
+    }
+
+    None
 }
