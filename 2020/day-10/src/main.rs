@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fs;
 
 fn main() {
@@ -18,4 +19,20 @@ fn main() {
     }
 
     println!("part 1: {}", num_1 * num_3);
+
+    let mut map: HashMap<i32, i64> = HashMap::new();
+
+    map.insert(0, 1);
+    for number in &numbers {
+        let mut num_connections = 0;
+        for reachable in &[number - 1, number - 2, number - 3] {
+            if map.contains_key(reachable) {
+                num_connections += map.get(&reachable).unwrap();
+            }
+            map.insert(*number, num_connections);
+        }
+    }
+
+    let result = map.get(numbers.iter().last().unwrap()).unwrap();
+    println!("part 2: {}", result);
 }
