@@ -2,19 +2,18 @@ use std::fs;
 
 fn main() {
     let input = fs::read_to_string("input.txt").unwrap();
-    let (time, bus_numbers) = parse_input1(&input);
+    let (time, bus_order) = parse_input(&input);
 
-    let waiting_times: Vec<i64> = bus_numbers
+    let waiting_times: Vec<i64> = bus_order
         .iter()
-        .map(|&x| minutes_to_wait(time, x))
+        .map(|&x| minutes_to_wait(time, x.0))
         .collect();
 
     // we take the waiting time - bus combination with minimal waiting time
-    let result_part1 = waiting_times.iter().zip(bus_numbers).min().unwrap();
+    let result = waiting_times.iter().zip(&bus_order).min().unwrap();
 
-    println!("result (part 1): {}", result_part1.0 * result_part1.1);
+    println!("result (part 1): {}", result.0 * (result.1).0);
 
-    let bus_order = parse_input2(&input);
     let perfect_time = find_timestamp(&bus_order);
 
     println!("timestamp (part 2): {}", perfect_time);
@@ -57,23 +56,10 @@ fn solve_u(n_i_bar: i64, n_i: i64) -> i64 {
     k
 }
 
-fn parse_input1(input: &str) -> (i64, Vec<i64>) {
+fn parse_input(input: &str) -> (i64, Vec<(i64, i64)>) {
     let lines: Vec<&str> = input.lines().collect();
 
     let time: i64 = lines[0].parse().unwrap();
-
-    let mut bus_numbers = Vec::new();
-    for bus in lines[1].split(',') {
-        if bus != 'x'.to_string() {
-            bus_numbers.push(bus.parse().unwrap());
-        }
-    }
-
-    (time, bus_numbers)
-}
-
-fn parse_input2(input: &str) -> Vec<(i64, i64)> {
-    let lines: Vec<&str> = input.lines().collect();
 
     let mut bus_order = Vec::new();
     for (minute, bus) in lines[1].split(',').enumerate() {
@@ -82,5 +68,5 @@ fn parse_input2(input: &str) -> Vec<(i64, i64)> {
         }
     }
 
-    bus_order
+    (time, bus_order)
 }
