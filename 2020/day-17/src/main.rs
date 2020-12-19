@@ -106,6 +106,7 @@ fn displacements(num_dimensions: usize) -> Vec<Position> {
     coordinates
 }
 
+// ugly, might beautify later, maybe
 fn add_coordinate(displacements: &Position) -> Vec<Position> {
     let mut new_coordinates = Vec::new();
 
