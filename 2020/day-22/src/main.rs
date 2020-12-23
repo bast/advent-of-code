@@ -1,31 +1,71 @@
-use std::collections::VecDeque;
+use std::collections::{HashSet, VecDeque};
 use std::fs;
 
 fn main() {
     let input = fs::read_to_string("input.txt").unwrap();
 
-    let mut cards = read_cards(&input);
+    let decks = read_cards(&input);
 
-    println!("result from part 1: {}", game(&mut cards));
+    println!(
+        "result from part 1: {:#?}",
+        game(&decks[0], &decks[1], false)
+    );
+    println!(
+        "result from part 2: {:#?}",
+        game(&decks[0], &decks[1], true)
+    );
 }
 
-fn game(cards: &mut [VecDeque<usize>]) -> usize {
-    loop {
-        if cards[0].is_empty() || cards[1].is_empty() {
-            break;
+fn game(
+    deck1_input: &VecDeque<usize>,
+    deck2_input: &VecDeque<usize>,
+    recursive_game: bool,
+) -> (usize, usize) {
+    let mut deck1: VecDeque<usize> = deck1_input.clone();
+    let mut deck2: VecDeque<usize> = deck2_input.clone();
+
+    let mut history1: HashSet<VecDeque<usize>> = HashSet::new();
+    let mut history2: HashSet<VecDeque<usize>> = HashSet::new();
+
+    'outer: loop {
+        if deck1.is_empty() || deck2.is_empty() {
+            break 'outer;
         }
-        let card1 = cards[0].pop_front().unwrap();
-        let card2 = cards[1].pop_front().unwrap();
-        if card1 > card2 {
-            cards[0].push_back(card1);
-            cards[0].push_back(card2);
+        if history1.contains(&deck1) || history2.contains(&deck2) {
+            return (score(&deck1), 0);
+        }
+
+        history1.insert(deck1.clone());
+        history2.insert(deck2.clone());
+
+        let card1 = deck1.pop_front().unwrap();
+        let card2 = deck2.pop_front().unwrap();
+
+        let player1_wins: bool;
+
+        if recursive_game && deck1.len() >= card1 && deck2.len() >= card2 {
+            let mut subdeck1 = deck1.clone();
+            subdeck1.truncate(card1);
+            let mut subdeck2 = deck2.clone();
+            subdeck2.truncate(card2);
+
+            let (score1, score2) = game(&subdeck1, &subdeck2, recursive_game);
+
+            player1_wins = score1 > score2;
         } else {
-            cards[1].push_back(card2);
-            cards[1].push_back(card1);
+            player1_wins = card1 > card2;
+        }
+
+        if player1_wins {
+            deck1.push_back(card1);
+            deck1.push_back(card2);
+        } else {
+            deck2.push_back(card2);
+            deck2.push_back(card1);
         }
     }
 
-    score(&cards[0]) + score(&cards[1])
+    (score(&deck1), score(&deck2))
 }
 
 fn score(deck: &VecDeque<usize>) -> usize {
