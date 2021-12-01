@@ -26,7 +26,5 @@ fn main() {
 
     let depths = read_file("input.txt");
     println!("part 1: {}", num_increased(&depths));
-
-    let depths = read_file("input.txt");
     println!("part 2: {}", num_increased_sliding(&depths));
 }
