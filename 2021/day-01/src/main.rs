@@ -1,21 +1,15 @@
 use std::fs;
 
-fn read_file(file_name: &str) -> Vec<i32> {
+fn read_file(file_name: &str) -> Vec<usize> {
     let input = fs::read_to_string(&file_name).unwrap();
     input.lines().map(|x| x.parse().unwrap()).collect()
 }
 
-fn num_increased(depths: &[i32]) -> usize {
-    let mut n = 0;
-    for pair in depths.windows(2) {
-        if pair[1] > pair[0] {
-            n += 1;
-        }
-    }
-    n
+fn num_increased(depths: &[usize]) -> usize {
+    depths.windows(2).filter(|pair| pair[1] > pair[0]).count()
 }
 
-fn num_increased_sliding(depths: &[i32]) -> usize {
+fn num_increased_sliding(depths: &[usize]) -> usize {
     let sums: Vec<_> = depths.windows(3).map(|t| t[0] + t[1] + t[2]).collect();
     num_increased(&sums)
 }
