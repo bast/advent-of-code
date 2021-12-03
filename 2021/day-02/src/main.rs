@@ -1,40 +1,46 @@
+use recap::Recap;
+use serde::Deserialize;
 use std::fs;
 
-fn parse_line(line: &str) -> (String, usize) {
-    let words: Vec<&str> = line.split_whitespace().collect();
-    let s = words[0].to_string();
-    let n: usize = words[1].parse().unwrap();
-    (s, n)
+#[derive(Debug, Deserialize, Recap)]
+#[recap(regex = r"(?x)
+        (?P<direction>\w+)
+        \s+
+        (?P<n>\d+)
+        $")]
+struct Command {
+    direction: String,
+    n: usize,
 }
 
-fn read_input(file_name: &str) -> Vec<(String, usize)> {
+fn read_input(file_name: &str) -> Vec<Command> {
     let input = fs::read_to_string(file_name).unwrap();
-    input.lines().map(|line| parse_line(line)).collect()
+    input.lines().map(|line| line.parse().unwrap()).collect()
 }
 
 fn main() {
-    let instructions = read_input("input.txt");
+    let commands = read_input("input.txt");
 
     let (mut x, mut y) = (0, 0);
-    for (instruction, n) in &instructions {
-        match &instruction[..] {
-            "forward" => x += n,
-            "down" => y += n,
-            "up" => y -= n,
+    for command in &commands {
+        match &command.direction[..] {
+            "forward" => x += command.n,
+            "down" => y += command.n,
+            "up" => y -= command.n,
             _ => panic!("unexpected input"),
         }
     }
     println!("part 1: {}", x * y);
 
     let (mut x, mut y, mut aim) = (0, 0, 0);
-    for (instruction, n) in &instructions {
-        match &instruction[..] {
+    for command in &commands {
+        match &command.direction[..] {
             "forward" => {
-                x += n;
-                y += n * aim;
+                x += command.n;
+                y += command.n * aim;
             }
-            "down" => aim += n,
-            "up" => aim -= n,
+            "down" => aim += command.n,
+            "up" => aim -= command.n,
             _ => panic!("unexpected input"),
         }
     }
