@@ -20,25 +20,25 @@ def visited_coordinates(instructions):
     x, y, num_steps = 0, 0, 0
     for direction, n in instructions:
         match direction:
-            case 'R':
+            case "R":
                 for (j, k) in enumerate(range(x + 1, x + n + 1)):
                     coordinates.add((k, y))
                     num_steps += 1
                     steps[(k, y)] = num_steps
                 x += n
-            case 'L':
+            case "L":
                 for (j, k) in enumerate(range(x - 1, x - n - 1, -1)):
                     coordinates.add((k, y))
                     num_steps += 1
                     steps[(k, y)] = num_steps
                 x -= n
-            case 'U':
+            case "U":
                 for (j, k) in enumerate(range(y + 1, y + n + 1)):
                     coordinates.add((x, k))
                     num_steps += 1
                     steps[(x, k)] = num_steps
                 y += n
-            case 'D':
+            case "D":
                 for (j, k) in enumerate(range(y - 1, y - n - 1, -1)):
                     coordinates.add((x, k))
                     num_steps += 1
