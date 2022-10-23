@@ -1,7 +1,7 @@
 import sys
 from more_itertools import grouper
 
-sys.path.append("..")
+sys.path.append("../..")
 
 from read import read_split_and_parse
 

@@ -2,7 +2,7 @@ import sys
 import math
 from collections import defaultdict
 
-sys.path.append("..")
+sys.path.append("../..")
 
 from read import read_positions
 
