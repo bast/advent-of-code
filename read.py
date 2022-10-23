@@ -16,11 +16,10 @@ def read_regex_and_parse(file_name, regex, fun):
         for line in f.read().splitlines():
             try:
                 words = pattern.search(line).groups()
-                match len(words):
-                    case 1:
-                        result.append(fun(words[0]))
-                    case _:
-                        result.append(tuple(map(lambda t: t[0](t[1]), zip(fun, words))))
+                if len(words) == 1:
+                    result.append(fun(words[0]))
+                else:
+                    result.append(tuple(map(lambda t: t[0](t[1]), zip(fun, words))))
             except AttributeError:
                 pass
     return result
