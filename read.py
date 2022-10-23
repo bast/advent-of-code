@@ -25,13 +25,16 @@ def read_regex_and_parse(file_name, regex, fun):
     return result
 
 
-def read_positions(file_name):
+def read_positions(file_name, row_major):
     positions = []
     with open(file_name, "r") as f:
         for row, line in enumerate(f.read().splitlines()):
             for col, c in enumerate(line):
                 if c == "#":
-                    positions.append((col, row))
+                    if row_major:
+                        positions.append((row, col))
+                    else:
+                        positions.append((col, row))
     return positions
 
 

@@ -19,7 +19,7 @@ def get_distance(dx: int, dy: int) -> int:
     return int(d * 10000)
 
 
-positions = read_positions("input.txt")
+positions = read_positions("input.txt", row_major=False)
 
 
 direction_map = defaultdict(set)
