@@ -33,3 +33,12 @@ def read_positions(file_name):
                 if c == "#":
                     positions.append((col, row))
     return positions
+
+
+def read_block_columns(file_name):
+    with open(file_name, "r") as f:
+        lines = f.read().splitlines()
+        columns = []
+        for column in range(len(lines[0])):
+            columns.append([line[column] for line in lines])
+        return columns
