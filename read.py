@@ -45,3 +45,11 @@ def read_block_columns(file_name):
         for column in range(len(lines[0])):
             columns.append([line[column] for line in lines])
         return columns
+
+
+def read_block_dimensions(file_name):
+    with open(file_name, "r") as f:
+        lines = f.read().splitlines()
+        num_rows = len(lines)
+        num_cols = len(lines[0])
+        return num_rows, num_cols
