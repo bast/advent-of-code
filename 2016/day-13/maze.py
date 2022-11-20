@@ -1,56 +1,8 @@
-from collections import deque
+import sys
 
+sys.path.append("../..")
 
-def find_path(origin, destination, position_is_allowed, neighbors):
-    if not position_is_allowed(origin):
-        return []
-    if not position_is_allowed(destination):
-        return []
-
-    visited = set()
-    visited.add(origin)
-
-    queue = deque()
-    queue.append([origin])
-
-    while queue:
-        path = queue.popleft()
-        position = path[-1]
-
-        if position == destination:
-            return path
-
-        for neighbor in neighbors(position):
-            if neighbor not in visited:
-                visited.add(neighbor)
-                if position_is_allowed(neighbor):
-                    queue.append(path + [neighbor])
-
-    return []  # no path exists
-
-
-def visited_positions(origin, num_steps_from_origin, position_is_allowed, neighbors):
-    if not position_is_allowed(origin):
-        return []
-
-    visited = set()
-    visited.add(origin)
-
-    queue = deque()
-    queue.append([origin])
-
-    while queue:
-        path = queue.popleft()
-        position = path[-1]
-        num_steps = len(path) - 1
-        if num_steps < num_steps_from_origin:
-            for neighbor in neighbors(position):
-                if neighbor not in visited:
-                    if position_is_allowed(neighbor):
-                        visited.add(neighbor)
-                        queue.append(path + [neighbor])
-
-    return list(visited)
+from pathfinder import find_path, visited_positions, print_block
 
 
 def _custom_is_allowed(x: int, y: int, number: int) -> bool:
@@ -74,16 +26,6 @@ def position_is_allowed(position):
 def neighbors(position):
     row, col = position
     return [(row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1)]
-
-
-def print_block(legend, row_range, col_range):
-    print()
-    for ir in range(row_range[0], row_range[1] + 1):
-        chars = []
-        for ic in range(col_range[0], col_range[1] + 1):
-            position = (ir, ic)
-            chars.append(legend(position))
-        print("".join(chars))
 
 
 origin = (1, 1)
