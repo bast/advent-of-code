@@ -11,21 +11,7 @@ class Board:
     values: defaultdict(int)
 
 
-def neighbors(position):
-    row, col = position
-    return [
-        (row - 1, col - 1),
-        (row - 1, col),
-        (row - 1, col + 1),
-        (row, col - 1),
-        (row, col + 1),
-        (row + 1, col - 1),
-        (row + 1, col),
-        (row + 1, col + 1),
-    ]
-
-
-def update_board(board, update_function):
+def update_board(board, neighbors, update_function):
     new_board = Board(
         num_rows=board.num_rows, num_cols=board.num_cols, values=defaultdict(int)
     )
@@ -38,10 +24,6 @@ def update_board(board, update_function):
     return new_board
 
 
-def sum_values(board):
-    return sum(board.values.values())
-
-
 def read_board(file_name):
     values = defaultdict(int)
     for (row, col) in read_positions(file_name, row_major=True):
@@ -50,3 +32,15 @@ def read_board(file_name):
     num_rows, num_cols = read_block_dimensions(file_name)
 
     return Board(num_rows, num_cols, values)
+
+
+def print_board(board):
+    print()
+    for row in range(board.num_rows):
+        s = ""
+        for col in range(board.num_cols):
+            if board.values[(row, col)] == 1:
+                s += "#"
+            else:
+                s += "."
+        print(s)

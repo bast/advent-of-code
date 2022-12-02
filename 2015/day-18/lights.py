@@ -2,7 +2,21 @@ import sys
 
 sys.path.append("../..")
 
-from gol import read_board, update_board, sum_values
+from gol import read_board, update_board
+
+
+def neighbors(position):
+    row, col = position
+    return [
+        (row - 1, col - 1),
+        (row - 1, col),
+        (row - 1, col + 1),
+        (row, col - 1),
+        (row, col + 1),
+        (row + 1, col - 1),
+        (row + 1, col),
+        (row + 1, col + 1),
+    ]
 
 
 def update_function(value, neighbor_values):
@@ -31,14 +45,14 @@ num_steps = 100
 
 board = read_board("input.txt")
 for _ in range(num_steps):
-    board = update_board(board, update_function)
+    board = update_board(board, neighbors, update_function)
 
-print(f"part 1: {sum_values(board)}")
+print(f"part 1: {sum(board.values.values())}")
 
 board = read_board("input.txt")
 board = tweak_corner_lights(board)
 for _ in range(num_steps):
-    board = update_board(board, update_function)
+    board = update_board(board, neighbors, update_function)
     board = tweak_corner_lights(board)
 
-print(f"part 2: {sum_values(board)}")
+print(f"part 2: {sum(board.values.values())}")
