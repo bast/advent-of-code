@@ -29,6 +29,28 @@ def find_path(origin, destination, position_is_allowed, neighbors):
     return []  # no path exists
 
 
+def find_path2(origin, destination, neighbors):
+    visited = set()
+    visited.add(origin)
+
+    queue = deque()
+    queue.append([origin])
+
+    while queue:
+        path = queue.popleft()
+        position = path[-1]
+
+        if position == destination:
+            return path
+
+        for neighbor in neighbors(position):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(path + [neighbor])
+
+    return []  # no path exists
+
+
 def visited_positions(origin, num_steps_from_origin, position_is_allowed, neighbors):
     if not position_is_allowed(origin):
         return []
