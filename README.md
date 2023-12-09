@@ -1,4 +1,3 @@
-# advent-of-code
+# My solutions to [Advent of Code](https://adventofcode.com/)
 
-Sharing some [Advent of Code](https://adventofcode.com/) solutions.
 Suggestions/improvements always welcome.
